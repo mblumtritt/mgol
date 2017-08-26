@@ -2,7 +2,7 @@
 
 I liked to find out if I'm able to implement a "[Conway's Game of Life](https://en.wikipedia.org/wiki/Game_of_Life)" in [Ruby](https://github.com/ruby) which demonstrates it's current state graphically in an acceptable speed. With the help of [Gosu](https://github.com/gosu/gosu) (which I already used before in some game development) it was easy to have fast (enough) graphics. But the real challenge was to find a fast algorithm in Ruby for the Game of Life automat.
 
-I was aware that Ruby isn't the fastest interpreter around. That why the question was if it's possible to tweak an algorithm to become fast enough. After the first very straight forward Array-based implementation I switched to an HasLife-like solution (yes Hashes are really fast in Ruby). With my current implementation I removed any object creation (creating objects in Ruby is very slow) and reduced the algorithm for hash calculation (which was easy as soon as I remembered the good old offset calculation for two dimensional Arrays from my good old assembler days)...
+I was aware that Ruby isn't the fastest interpreter around. That why the question was if it's possible to tweak an algorithm to become fast enough. After the first very straight forward Array-based implementation I switched to an [HasLife](http://www.conwaylife.com/wiki/HashLife)-like solution (yes Hashes are really fast in Ruby). With my current implementation I removed any object creation (creating objects in Ruby is very slow) and reduced the algorithm for hash calculation (which was easy as soon as I remembered the good old offset calculation for two dimensional Arrays from my good old assembler days)...
 
 I'm not complete satisfied with the current solution but:
 
