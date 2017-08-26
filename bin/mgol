@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+
+if ARGV.index('--help') || ARGV.index('-h')
+  puts <<~ø
+    Mike's Game of Life (Ruby Implementation)
+    usage: mgol [DIRECTORY]
+
+    DIRECTORY is an optional directory containing RLE encoded patterns.
+    (see http://www.conwaylife.com/wiki/Rle)
+  ø
+  exit
+end
+
+Process.setproctitle('MGoL')
+ROOT = File.realpath('../..', __FILE__)
+require "#{ROOT}/lib/mgol"
+
+MGoL::Loader.load_dir(File.join(ROOT, ARGV[0] || 'samples'))
+MGoL::Loader.sort!
+MGoL::Game.run!
