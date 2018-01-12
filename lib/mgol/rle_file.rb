@@ -26,7 +26,7 @@ module MGoL
         when 'b'.freeze
           x += count
         when 'o'.freeze
-          count.times do |i|
+          count.times do
             yield(x, y)
             x += 1
           end
@@ -37,7 +37,7 @@ module MGoL
 
     private
 
-    RE_EOH = /^x = (\d+), y = (\d+)/.freeze
+    RE_EOH = /^x = (\d+), y = (\d+)/
 
     def count
       return 1 if @count_str.empty?

@@ -35,7 +35,7 @@ module MGoL
       @board.each_alive{ |x, y| Gosu.draw_rect(x * @cell_size, y * @cell_size, @cell_size, @cell_size, @color) }
       @small_font.draw(@board.count, 0, height - 16, 0xfffffff1)
       c = Loader.current
-      @font.draw("#{c.name} (#{c.width}x#{c.height})", 0,0, 0xfffffff1) if @paused
+      @font.draw("#{c.name} (#{c.width}x#{c.height})", 0, 0, 0xfffffff1) if @paused
       @small_font.draw(Gosu.fps, width - 16, 0, 0xfffffff1)
     end
 
