@@ -37,7 +37,7 @@ module MGoL
 
     private
 
-    RE_EOH = /^x = (\d+), y = (\d+)/
+    RE_EOH = /^x = (\d+), y = (\d+)/.freeze
 
     def count
       return 1 if @count_str.empty?
@@ -48,7 +48,7 @@ module MGoL
     def content_from(file_name)
       content = ''
       in_body = false
-      IO.read(@file_name).each_line do |line|
+      IO.read(file_name).each_line do |line|
         if in_body
           content += line
           line.index('!'.freeze) ? break : next

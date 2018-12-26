@@ -16,11 +16,11 @@ module MGoL
     end
 
     def [](x, y)
-      @gen.key?(key(x, y))
+      @gen.key?((y * @width + x) % @max_offset)
     end
 
     def []=(x, y, alive)
-      key = key(x, y)
+      key = (y * @width + x) % @max_offset
       alive ? @gen[key] = 1 : @gen.delete(key)
     end
 
@@ -51,44 +51,44 @@ module MGoL
         k = key - 1
         v = @gen[k]
         alive_neighbors += v
-        fringe[k] = 1 if 0 == v
+        fringe[k] = 1 if v.zero?
 
         k = key + 1
         v = @gen[k]
         alive_neighbors += v
-        fringe[k] = 1 if 0 == v
+        fringe[k] = 1 if v.zero?
 
         # above
         k = key - @width
         v = @gen[k]
         alive_neighbors += v
-        fringe[k] = 1 if 0 == v
+        fringe[k] = 1 if v.zero?
 
         k -= 1
         v = @gen[k]
         alive_neighbors += v
-        fringe[k] = 1 if 0 == v
+        fringe[k] = 1 if v.zero?
 
         k += 2
         v = @gen[k]
         alive_neighbors += v
-        fringe[k] = 1 if 0 == v
+        fringe[k] = 1 if v.zero?
 
         # below
         k = key + @width
         v = @gen[k]
         alive_neighbors += v
-        fringe[k] = 1 if 0 == v
+        fringe[k] = 1 if v.zero?
 
         k -= 1
         v = @gen[k]
         alive_neighbors += v
-        fringe[k] = 1 if 0 == v
+        fringe[k] = 1 if v.zero?
 
         k += 2
         v = @gen[k]
         alive_neighbors += v
-        fringe[k] = 1 if 0 == v
+        fringe[k] = 1 if v.zero?
 
         ret[key] = 1 if 2 == alive_neighbors || 3 == alive_neighbors
       end
@@ -107,11 +107,6 @@ module MGoL
         @gen[below - 1] +
         @gen[below] +
         @gen[below + 1]
-    end
-
-    def key(x, y)
-      ret = y * @width + x
-      @max_offset < ret ? 0 : ret
     end
   end
 end

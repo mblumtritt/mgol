@@ -32,11 +32,17 @@ module MGoL
     end
 
     def draw
-      @board.each_alive{ |x, y| Gosu.draw_rect(x * @cell_size, y * @cell_size, @cell_size, @cell_size, @color) }
-      @small_font.draw(@board.count, 0, height - 16, 0xfffffff1)
+      @board.each_alive do |x, y|
+        Gosu.draw_rect(
+          x * @cell_size, y * @cell_size, @cell_size, @cell_size, @color
+        )
+      end
+      @small_font.draw_text(@board.count, 0, height - 16, 0xfffffff1)
       c = Loader.current
-      @font.draw("#{c.name} (#{c.width}x#{c.height})", 0, 0, 0xfffffff1) if @paused
-      @small_font.draw(Gosu.fps, width - 16, 0, 0xfffffff1)
+      if @paused
+        @font.draw_text("#{c.name} (#{c.width}x#{c.height})", 0, 0, 0xfffffff1)
+      end
+      @small_font.draw_text(Gosu.fps, width - 16, 0, 0xfffffff1)
     end
 
     def needs_cursor?
