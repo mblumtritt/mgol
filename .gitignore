@@ -2,3 +2,4 @@
 .bundle/
 tmp/
 local/
+*.lock

@@ -5,6 +5,7 @@
 module MGoL
   class Board
     attr_reader :width, :height
+
     def initialize(width, height)
       @width, @height = width, height
       @max_offset = width + height * width
@@ -25,8 +26,7 @@ module MGoL
     end
 
     def clear!
-      @gen = {}
-      @gen.default = 0
+      @gen = Hash.new(0).compare_by_identity
     end
 
     def each_alive
@@ -43,69 +43,49 @@ module MGoL
     private
 
     def next_generation
-      ret, fringe = {}, {}
-      ret.default = 0
+      ret = Hash.new(0).compare_by_identity
+      fringe = {}.compare_by_identity
       @gen.each_key do |key|
         alive_neighbors = 0
 
-        k = key - 1
-        v = @gen[k]
-        alive_neighbors += v
-        fringe[k] = 1 if v.zero?
+        k = key - 1 # left
+        @gen.key?(k) ? alive_neighbors += 1 : fringe[k] = 1
 
-        k = key + 1
-        v = @gen[k]
-        alive_neighbors += v
-        fringe[k] = 1 if v.zero?
+        k -= @width # left above
+        @gen.key?(k) ? alive_neighbors += 1 : fringe[k] = 1
 
-        # above
-        k = key - @width
-        v = @gen[k]
-        alive_neighbors += v
-        fringe[k] = 1 if v.zero?
+        k += 1 # above
+        @gen.key?(k) ? alive_neighbors += 1 : fringe[k] = 1
 
-        k -= 1
-        v = @gen[k]
-        alive_neighbors += v
-        fringe[k] = 1 if v.zero?
+        k += 1 # right above
+        @gen.key?(k) ? alive_neighbors += 1 : fringe[k] = 1
 
-        k += 2
-        v = @gen[k]
-        alive_neighbors += v
-        fringe[k] = 1 if v.zero?
+        k += @width # right
+        @gen.key?(k) ? alive_neighbors += 1 : fringe[k] = 1
 
-        # below
-        k = key + @width
-        v = @gen[k]
-        alive_neighbors += v
-        fringe[k] = 1 if v.zero?
+        k += @width # right below
+        @gen.key?(k) ? alive_neighbors += 1 : fringe[k] = 1
 
-        k -= 1
-        v = @gen[k]
-        alive_neighbors += v
-        fringe[k] = 1 if v.zero?
+        k -= 1 # below
+        @gen.key?(k) ? alive_neighbors += 1 : fringe[k] = 1
 
-        k += 2
-        v = @gen[k]
-        alive_neighbors += v
-        fringe[k] = 1 if v.zero?
+        k -= 1 # left below
+        @gen.key?(k) ? alive_neighbors += 1 : fringe[k] = 1
 
-        ret[key] = 1 if 2 == alive_neighbors || 3 == alive_neighbors
+        (2 == alive_neighbors || 3 == alive_neighbors) && ret[key] = 1
       end
-      fringe.each_key{ |k| ret[k] = 1 if 3 == alive_neighbors_at(k) }
+      fringe.each_key{ |key| 3 == alive_neighbors_at(key) && ret[key] = 1 }
       ret
     end
 
     def alive_neighbors_at(key)
-      above = key - @width
-      below = key + @width
-      @gen[above - 1] +
-        @gen[above] +
-        @gen[above + 1] +
-        @gen[key - 1] +
+      @gen[key - 1] +
         @gen[key + 1] +
+        @gen[above = key - @width] +
+        @gen[above - 1] +
+        @gen[above + 1] +
+        @gen[below = key + @width] +
         @gen[below - 1] +
-        @gen[below] +
         @gen[below + 1]
     end
   end

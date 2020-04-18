@@ -15,7 +15,6 @@ module MGoL
       super(1024, 768, fullscreen: false)
       self.caption = %(Mike's Game of Life Ruby Implementation)
       @board_class = board_class
-      @color = Gosu::Color.new(0xff_b89605)
       @small_font = Gosu::Font.new(12)
       @font = Gosu::Font.new(14)
       @paused = true
@@ -34,12 +33,12 @@ module MGoL
     def draw
       @board.each_alive do |x, y|
         Gosu.draw_rect(
-          x * @cell_size, y * @cell_size, @cell_size, @cell_size, @color
+          x * @cell_size, y * @cell_size, @cell_size, @cell_size, 0xff_b89605
         )
       end
       @small_font.draw_text(@board.count, 0, height - 16, 0xfffffff1)
-      c = Loader.current
       if @paused
+        c = Loader.current
         @font.draw_text("#{c.name} (#{c.width}x#{c.height})", 0, 0, 0xfffffff1)
       end
       @small_font.draw_text(Gosu.fps, width - 16, 0, 0xfffffff1)
